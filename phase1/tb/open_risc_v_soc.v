@@ -1,6 +1,6 @@
 module open_risc_v_soc(
     input wire clk,
-    input wire rst_n
+    input wire rst
 );
 
 // cpu to rom
@@ -11,7 +11,7 @@ wire[31:0] rom_inst_i;
 
 open_risc_v open_risc_v_inst(
     .clk                (clk),
-    .rst_n              (rst_n),
+    .rst                (rst),
     .inst_i             (rom_inst_i),
     .inst_addr_o        (open_risc_v_inst_addr_o)
 );

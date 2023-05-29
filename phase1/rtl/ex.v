@@ -1,4 +1,5 @@
 `include "defines.v"
+
 module ex(
     // from id_ex
     input wire[31:0] inst_i,
@@ -6,7 +7,7 @@ module ex(
     input wire[31:0] op1_i,
     input wire[31:0] op2_i,
     input wire[4:0]  rd_addr_i,
-    input wire       reg_wen_i,
+    input wire       rd_wen_i,
     // to regs 回写
     output reg[4:0]  rd_addr_o,
     output reg[31:0] rd_data_o,
@@ -45,7 +46,7 @@ always @(*) begin
           endcase
         end 
 
-        `INST_TYPE_I:begin
+        `INST_TYPE_R_M:begin
           case (funct3)
             `INST_ADD_SUB: begin
                 if(funct7 == 7'b000_0000)begin // ADD

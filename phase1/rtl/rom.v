@@ -3,7 +3,7 @@ module rom(
     output reg[31:0] inst_o
 );
 
-    reg[31:0] rom_mem[0:11]; // 2^{12}=4096个32b的空间
+    reg[31:0] rom_mem[0:4095]; // 2^{12}=4096个32b的空间
 
     always @(*) begin
         //reg 类型的组合逻辑需要在always语句下赋值
