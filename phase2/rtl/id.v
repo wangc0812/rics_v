@@ -85,6 +85,7 @@ module id(
                     end
                 endcase   
             end
+            
             `INST_TYPE_B:begin
               case (funct3)
                 `INST_BNE:begin
