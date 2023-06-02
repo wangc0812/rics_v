@@ -11,7 +11,11 @@ module ex(
     // to regs 回写
     output reg[4:0]  rd_addr_o,
     output reg[31:0] rd_data_o,
-    output reg       rd_wen_o        
+    output reg       rd_wen_o,
+    // to ctrl
+    output reg[31:0] jump_addr_o,
+    output reg       jump_en_o,
+    output reg       hold_flag_o        
 );
     wire[6:0] opcode;
     wire[4:0] rd;
@@ -29,10 +33,20 @@ module ex(
     assign funct7 = inst_i[31:25];
     assign imm    = inst_i[31:20];
 
+    // Branch Inst
+    wire[31:0] jump_imm;
+    assign jump_imm = {{19{inst_i[31]}}, inst_i[31], inst_i[7], inst_i[30:25], inst_i[11:8], 1'b0}; // 符号位扩展补齐
+    wire   op1_i_equal_op2_i;
+    assign op1_i_equal_op2_i = (op1_i == op2_i) ? 1'b1 : 1'b0; //三位运算符
+
 always @(*) begin
     case (opcode)
+
         `INST_TYPE_I:begin
-          case (funct3)
+            jump_addr_o = 32'b0;
+            jump_en_o   = 1'b0;
+            hold_flag_o = 1'b0;
+            case (funct3)
             `INST_ADDI: begin
                 rd_data_o = op1_i + op2_i;
                 rd_addr_o = rd_addr_i;
@@ -47,7 +61,10 @@ always @(*) begin
         end 
 
         `INST_TYPE_R_M:begin
-          case (funct3)
+            jump_addr_o = 32'b0;
+            jump_en_o   = 1'b0;
+            hold_flag_o = 1'b0;
+            case (funct3)
             `INST_ADD_SUB: begin
                 if(funct7 == 7'b000_0000)begin // ADD
                     rd_data_o = op1_i + op2_i;
@@ -67,12 +84,34 @@ always @(*) begin
                 rd_wen_o = 1'b0;
             end
           endcase
-        end 
+        end
+
+        `INST_TYPE_B:begin
+            // 为了防止出现锁存器，所有信号需要赋值
+            rd_data_o = 32'b0;
+            rd_addr_o = 5'b0;
+            rd_wen_o = 1'b0;
+            case (funct3)
+            `INST_BNE:begin
+                jump_addr_o = (inst_addr_i + jump_imm) & {32{op1_i_equal_op2_i}}; // 如果不跳转，jump_addr_o 赋全0
+                jump_en_o   = ~op1_i_equal_op2_i;
+                hold_flag_o = 1'b0;
+            end 
+            default:begin
+                jump_addr_o = 32'b0;
+                jump_en_o   = 1'b0;
+                hold_flag_o = 1'b0;
+            end 
+            endcase
+        end     
 
         default: begin
             rd_data_o = 32'b0;
             rd_addr_o = 5'b0;
             rd_wen_o = 1'b0;
+            jump_addr_o = 32'b0;
+            jump_en_o   = 1'b0;
+            hold_flag_o = 1'b0;
         end
     endcase
 end

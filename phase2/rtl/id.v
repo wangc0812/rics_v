@@ -84,6 +84,28 @@ module id(
                         reg_wen    = 1'b0;
                     end
                 endcase   
+            end
+            `INST_TYPE_B:begin
+              case (funct3)
+                `INST_BNE:begin
+                    // 为了防止出现锁存器，所有信号需要赋值
+                        rs1_addr_o = rs1; 
+                        rs2_addr_o = rs2;
+                        op1_o      = rs1_data_i;
+                        op2_o      = rs2_data_i;
+                        rd_addr_o  = 5'b0;
+                        reg_wen    = 1'b0;
+                  
+                end 
+                default:begin
+                        rs1_addr_o = 5'b0; 
+                        rs2_addr_o = 5'b0;
+                        op1_o      = 32'b0;
+                        op2_o      = 32'b0;
+                        rd_addr_o  = 5'b0;
+                        reg_wen    = 1'b0;
+                end 
+              endcase
             end  
 
 
