@@ -33,11 +33,11 @@ module ex(
     assign funct7 = inst_i[31:25];
     assign imm    = inst_i[31:20];
 
-    // Branch Inst
+    // Branch Instruction
     wire[31:0] jump_imm;
     assign jump_imm = {{19{inst_i[31]}}, inst_i[31], inst_i[7], inst_i[30:25], inst_i[11:8], 1'b0}; // 符号位扩展补齐
     wire   op1_i_equal_op2_i;
-    assign op1_i_equal_op2_i = (op1_i == op2_i) ? 1'b1 : 1'b0; //三位运算符
+    assign op1_i_equal_op2_i = (op1_i == op2_i) ? 1'b1 : 1'b0; // 三位运算符
 
 always @(*) begin
     case (opcode)
