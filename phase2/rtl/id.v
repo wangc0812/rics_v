@@ -117,6 +117,15 @@ module id(
                 reg_wen    = 1'b1; 
             end
 
+            `INST_LUI:begin
+                rs1_addr_o = 5'b0; 
+                rs2_addr_o = 5'b0;
+                op1_o      = {inst_i[31:12], 12'b0};
+                op2_o      = 32'b0;
+                rd_addr_o  = rd;
+                reg_wen    = 1'b1; 
+            end
+
             default: begin
                 rs1_addr_o = 5'b0; 
                 rs2_addr_o = 5'b0;
