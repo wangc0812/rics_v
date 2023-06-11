@@ -7,7 +7,7 @@ module pc_reg(
 );
 
     always @(posedge clk) begin
-        if(rst == 1'b0 || hold_flag_i == 1'b0)
+        if(rst == 1'b0)
             pc_o <= 32'b0;
         else if(jump_en)begin
           pc_o <= jump_addr_i;

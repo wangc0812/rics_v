@@ -1,0 +1,95 @@
+E:/risc_v_project/phase2/rtl/pc_reg.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/pc_reg.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module pc_reg
+
+Top level modules:
+	pc_reg
+
+} {} {}} E:/risc_v_project/phase2/rtl/id_ex.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/id_ex.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module id_ex
+
+Top level modules:
+	id_ex
+
+} {} {}} E:/risc_v_project/phase2/tb/tb.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/tb/tb.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module tb
+
+Top level modules:
+	tb
+
+} {} {}} E:/risc_v_project/phase2/rtl/if_id.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/if_id.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module if_id
+
+Top level modules:
+	if_id
+
+} {} {}} E:/risc_v_project/phase2/rtl/ex.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/ex.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ex
+
+Top level modules:
+	ex
+
+} {} {}} E:/risc_v_project/phase2/rtl/id.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/id.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module id
+
+Top level modules:
+	id
+
+} {} {}} E:/risc_v_project/phase2/rtl/rom.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/rom.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module rom
+
+Top level modules:
+	rom
+
+} {} {}} E:/risc_v_project/phase2/rtl/defines.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/defines.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+
+} {} {}} E:/risc_v_project/phase2/rtl/open_risc_v.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/open_risc_v.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module open_risc_v
+
+Top level modules:
+	open_risc_v
+
+} {} {}} E:/risc_v_project/phase2/tb/open_risc_v_soc.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/tb/open_risc_v_soc.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module open_risc_v_soc
+
+Top level modules:
+	open_risc_v_soc
+
+} {} {}} E:/risc_v_project/phase2/rtl/regs.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/regs.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module regs
+
+Top level modules:
+	regs
+
+} {} {}} E:/risc_v_project/phase2/rtl/ifetch.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/ifetch.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ifetch
+
+Top level modules:
+	ifetch
+
+} {} {}} E:/risc_v_project/phase2/rtl/dff_set.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/dff_set.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module dff_set
+
+Top level modules:
+	dff_set
+
+} {} {}} E:/risc_v_project/phase2/rtl/ctrl.v {1 {vlog -work work -stats=none E:/risc_v_project/phase2/rtl/ctrl.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ctrl
+
+Top level modules:
+	ctrl
+
+} {} {}}

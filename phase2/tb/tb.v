@@ -17,36 +17,43 @@ module tb;
     initial begin
         rst <= 1'b0;
         clk <= 1'b0;
-
         #30;
         rst <= 1'b1;
     end
 
     // rom initial
     initial begin
-        $readmemb(".\inst_txt\rv32ui-p-add.txt", tb.open_risc_v_soc_inst.rom_inst.rom_mem);
-    end
+		$readmemh("./inst_txt/rv32ui-p-add.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
+	end
 
-    initial begin
-        // while (1) begin
-        //     @(posedge clk)
-        //     $display("-----------------------");
-        //     $display("x27 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[27]);
-        //     $display("x28 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[28]);
-        //     $display("x29 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[29]);
-        //     $display("-----------------------");
-        // end
-        wait(x26 == 32'b1); // 当 x26 = 1 时程序执行完毕
-        if(x27 == 32'b1) begin
-            $display("###########     pass !     ###########");
-        end
-        else begin
-            $display("###########     fail !     ###########");
-            for (r = 0; r < 31; r = r + 1) begin
-                $display("x %2d register value is %d", r, tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[r]);
-            end
-        end
-    end
+    integer r;
+	initial begin
+/* 		while(1)begin
+			@(posedge clk) 
+			$display("x27 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[27]);
+			$display("x28 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[28]);
+			$display("x29 register value is %d",tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[29]);
+			$display("---------------------------");
+			$display("---------------------------");
+		end */
+		wait(x26 == 32'b1);
+		
+		#200;
+		if(x27 == 32'b1) begin
+			$display("############################");
+			$display("########  pass  !!!#########");
+			$display("############################");
+		end
+		else begin
+			$display("############################");
+			$display("########  fail  !!!#########");
+			$display("############################");
+			$display("fail testnum = %2d", x3);
+			for(r = 0;r < 31; r = r + 1)begin
+				$display("x%2d register value is %d",r,tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[r]);	
+			end	
+		end
+	end
 
 
 

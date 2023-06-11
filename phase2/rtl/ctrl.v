@@ -1,7 +1,7 @@
 module ctrl(
-  input wire reg[31:0] jump_addr_i,
-  input wire reg       jump_en_i,
-  input wire reg       hold_flag_ex_i,
+  input wire[31:0] jump_addr_i,
+  input wire       jump_en_i,
+  input wire       hold_flag_ex_i,
   output reg[31:0] jump_addr_o,
   output reg       jump_en_o,
   output reg       hold_flag_o
