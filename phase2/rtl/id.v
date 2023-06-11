@@ -88,7 +88,7 @@ module id(
             
             `INST_TYPE_B:begin
               case (funct3)
-                `INST_BNE:begin
+                `INST_BNE, `INST_BEQ:begin
                     // 为了防止出现锁存器，所有信号需要赋值
                         rs1_addr_o = rs1; 
                         rs2_addr_o = rs2;

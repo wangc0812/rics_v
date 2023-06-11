@@ -37,7 +37,7 @@ module ex(
     wire[31:0] jump_imm;
     assign jump_imm = {{19{inst_i[31]}}, inst_i[31], inst_i[7], inst_i[30:25], inst_i[11:8], 1'b0}; // 符号位扩展补齐
     wire   op1_i_equal_op2_i;
-    assign op1_i_equal_op2_i = (op1_i == op2_i) ? 1'b1 : 1'b0; // 三位运算符
+    assign op1_i_equal_op2_i = (op1_i == op2_i) ? 1'b1 : 1'b0; // 三位运算符 如果两个操作数相等，op1_i_equal_op2_i = 1'b1
 
 always @(*) begin
     case (opcode)
@@ -92,8 +92,13 @@ always @(*) begin
             rd_addr_o = 5'b0;
             rd_wen_o = 1'b0;
             case (funct3)
+            `INST_BEQ:begin   // BEQ 相等时跳转，即op1_i_equal_op2_i=1'b1时跳转
+                jump_addr_o = (inst_addr_i + jump_imm) & {32{op1_i_equal_op2_i}};
+                jump_en_o   = op1_i_equal_op2_i;
+                hold_flag_o = 1'b0;
+            end
             `INST_BNE:begin
-                jump_addr_o = (inst_addr_i + jump_imm) & {32{op1_i_equal_op2_i}}; // 如果不跳转，jump_addr_o 赋全0
+                jump_addr_o = (inst_addr_i + jump_imm) & ~{32{op1_i_equal_op2_i}}; // 如果不跳转，jump_addr_o 赋全0
                 jump_en_o   = ~op1_i_equal_op2_i;
                 hold_flag_o = 1'b0;
             end 
