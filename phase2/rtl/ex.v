@@ -50,12 +50,12 @@ always @(*) begin
             `INST_ADDI: begin
                 rd_data_o = op1_i + op2_i;
                 rd_addr_o = rd_addr_i;
-                rd_wen_o = 1'b1;
+                rd_wen_o  = 1'b1;
             end
             default:begin
                 rd_data_o = 32'b0;
                 rd_addr_o = 5'b0;
-                rd_wen_o = 1'b0;
+                rd_wen_o  = 1'b0;
             end
           endcase
         end 
@@ -69,19 +69,19 @@ always @(*) begin
                 if(funct7 == 7'b000_0000)begin // ADD
                     rd_data_o = op1_i + op2_i;
                     rd_addr_o = rd_addr_i;
-                    rd_wen_o = 1'b1;
+                    rd_wen_o  = 1'b1;
                 end
                 else begin  //SUB
                     rd_data_o = op2_i - op1_i;
                     rd_addr_o = rd_addr_i;
-                    rd_wen_o = 1'b1;
+                    rd_wen_o  = 1'b1;
                 end
 
             end
             default:begin
                 rd_data_o = 32'b0;
                 rd_addr_o = 5'b0;
-                rd_wen_o = 1'b0;
+                rd_wen_o  = 1'b0;
             end
           endcase
         end
@@ -90,7 +90,7 @@ always @(*) begin
             // 为了防止出现锁存器，所有信号需要赋值
             rd_data_o = 32'b0;
             rd_addr_o = 5'b0;
-            rd_wen_o = 1'b0;
+            rd_wen_o  = 1'b0;
             case (funct3)
             `INST_BEQ:begin   // BEQ 相等时跳转，即op1_i_equal_op2_i=1'b1时跳转
                 jump_addr_o = (inst_addr_i + jump_imm) & {32{op1_i_equal_op2_i}};
@@ -108,12 +108,21 @@ always @(*) begin
                 hold_flag_o = 1'b0;
             end 
             endcase
-        end     
+        end
+
+        `INST_JAL:begin
+            rd_data_o   = inst_addr_i + 32'h4;
+            rd_addr_o   = rd;
+            rd_wen_o    = 1'b1;
+            jump_addr_o = op1_i + inst_addr_i;
+            jump_en_o   = 1'b1;
+            hold_flag_o = 1'b0; 
+            end     
 
         default: begin
-            rd_data_o = 32'b0;
-            rd_addr_o = 5'b0;
-            rd_wen_o = 1'b0;
+            rd_data_o   = 32'b0;
+            rd_addr_o   = 5'b0;
+            rd_wen_o    = 1'b0;
             jump_addr_o = 32'b0;
             jump_en_o   = 1'b0;
             hold_flag_o = 1'b0;
