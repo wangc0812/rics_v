@@ -43,11 +43,11 @@ module regs(
 	always @(posedge clk)begin
 		if(rst == 1'b0) begin
 			for(i = 0;i < 31;i = i + 1)begin
-				regs[i] = 32'b0;
+				regs[i] <= 32'b0;
 			end
 		end	
 		else if(reg_wen && reg_waddr_i != 5'b0)begin
-			regs[reg_waddr_i] = reg_wdata_i;
+			regs[reg_waddr_i] <= reg_wdata_i;
 		end	
 	end
 
