@@ -29,6 +29,7 @@ module id(
 	wire[4:0] rs2;
 	wire[6:0] func7;
 	wire[11:0]imm;
+	wire[4:0] shamt;
 	
 	assign opcode = inst_i[6:0];
 	assign rd 	  = inst_i[11:7];
@@ -37,6 +38,8 @@ module id(
 	assign rs2 	  = inst_i[24:20];
 	assign func7  = inst_i[31:25];
 	assign imm    = inst_i[31:20];
+	assign shamt  = inst_i[24:20];
+	
 	
 
 	
@@ -49,7 +52,7 @@ module id(
 		case(opcode)
 			`INST_TYPE_I:begin
 				case(func3)
-					`INST_ADDI:begin
+					`INST_ADDI, `INST_SLTI, `INST_SLTIU, `INST_XORI, `INST_ORI, `INST_ADNI:begin
 						rs1_addr_o = rs1;
 						rs2_addr_o = 5'b0;
 						op1_o 	   = rs1_data_i;
@@ -57,6 +60,15 @@ module id(
 						rd_addr_o  = rd;
 						reg_wen    = 1'b1;
 					end
+					`INST_SLLI, `INST_SRLI, `INST_SRAI:begin
+					    rs1_addr_o = rs1;
+						rs2_addr_o = 5'b0;
+						op1_o 	   = rs1_data_i;
+						op2_o      = {27'b0, shamt};
+						rd_addr_o  = rd;
+						reg_wen    = 1'b1;
+					end
+					
 					default:begin
 						rs1_addr_o = 5'b0;
 						rs2_addr_o = 5'b0;
