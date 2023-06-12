@@ -52,7 +52,7 @@ module id(
 		case(opcode)
 			`INST_TYPE_I:begin
 				case(func3)
-					`INST_ADDI, `INST_SLTI, `INST_SLTIU, `INST_XORI, `INST_ORI, `INST_ADNI:begin
+					`INST_ADDI, `INST_SLTI, `INST_SLTIU, `INST_XORI, `INST_ORI, `INST_ANDI:begin
 						rs1_addr_o = rs1;
 						rs2_addr_o = 5'b0;
 						op1_o 	   = rs1_data_i;

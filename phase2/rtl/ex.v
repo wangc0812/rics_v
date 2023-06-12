@@ -92,7 +92,7 @@ module ex(
 						rd_wen_o  = 1'b1;
 					end
 
-					`INST_ADNI:begin
+					`INST_ANDI:begin
 						rd_data_o = op1_i & op2_i;
 						rd_addr_o = rd_addr_i;
 						rd_wen_o  = 1'b1;
