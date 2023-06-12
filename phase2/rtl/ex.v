@@ -61,7 +61,8 @@ module ex(
 				jump_addr_o = 32'b0;
 				jump_en_o	= 1'b0;
 				hold_flag_o = 1'b0;			
-				case(func3)			
+				case(func3)
+
 					`INST_ADDI:begin
 						rd_data_o = op1_i + op2_i;
 						rd_addr_o = rd_addr_i;
@@ -130,18 +131,69 @@ module ex(
 				jump_addr_o = 32'b0;
 				jump_en_o	= 1'b0;
 				hold_flag_o = 1'b0;			
-				case(func3)				
+				case(func3)
+
 					`INST_ADD_SUB:begin
-						if(func7 == 7'b000_0000)begin//add
+						if(func7[5] == 1'b0)begin//add
 							rd_data_o = op1_i + op2_i;
 							rd_addr_o = rd_addr_i;
 							rd_wen_o  = 1'b1;
 						end
+
 						else begin
-							rd_data_o = op2_i - op1_i;
+							rd_data_o = op1_i - op2_i;
 							rd_addr_o = rd_addr_i;
 							rd_wen_o  = 1'b1; 								
 						end
+					end
+
+					`INST_SLL:begin
+						rd_data_o = op1_i << op2_i[4:0];
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1; 								
+					end
+
+					`INST_SLT:begin
+						rd_data_o = {30'b0, op1_i_less_op2_i_signed};
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1; 
+					end
+
+					`INST_SLTU:begin
+						rd_data_o = {30'b0, op1_i_less_op2_i_unsigned};
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1; 
+					end
+
+					`INST_XOR:begin
+						rd_data_o = op1_i ^ op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1; 
+					end
+
+					`INST_SR:begin
+						if (func7[5] == 1'b1) begin // SRAI
+							rd_data_o = ((op1_i >> op2_i[4:0]) & SRA_mask) | ({32{op1_i[31]}} & (~SRA_mask));
+						    rd_addr_o = rd_addr_i;
+						    rd_wen_o  = 1'b1;
+						end
+						else begin   // SRLI
+						   rd_data_o = op1_i >> op2_i[4:0];
+						   rd_addr_o = rd_addr_i;
+						   rd_wen_o  = 1'b1;
+						end
+					end
+					
+					`INST_OR:begin
+					   	rd_data_o = op1_i | op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1; 
+					end
+
+					`INST_AND:begin
+						rd_data_o = op1_i & op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;  
 					end
 					default:begin
 						rd_data_o = 32'b0;

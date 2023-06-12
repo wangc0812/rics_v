@@ -42,9 +42,6 @@ module id(
 	
 	
 
-	
-	
-	
 	always @(*)begin
 		inst_o  	= inst_i;
 		inst_addr_o = inst_addr_i;  
@@ -81,11 +78,11 @@ module id(
 			end
 			`INST_TYPE_R_M:begin
 				case(func3)
-					`INST_ADD_SUB:begin
+					`INST_ADD_SUB,`INST_SLL,`INST_SLT,`INST_SLTU,`INST_XOR,`INST_SR,`INST_OR,`INST_AND:begin
 						rs1_addr_o = rs1;
 						rs2_addr_o = rs2;
 						op1_o 	   = rs1_data_i;
-						op2_o      = rs2_data_i;
+						op2_o      = rs2_data_i; 
 						rd_addr_o  = rd;
 						reg_wen    = 1'b1;
 					end
