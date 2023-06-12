@@ -1,8 +1,8 @@
-; vsim modelsim.ini file, version 10.4
+; vsim modelsim.ini file
 [Version]
-INIVersion = "10.6c"
+INIVersion = "2020.4"
 
-; Copyright 1991-2017 Mentor Graphics Corporation
+; Copyright 1991-2020 Mentor Graphics Corporation
 ;
 ; All Rights Reserved.
 ;
@@ -51,8 +51,15 @@ std_developerskit = $MODEL_TECH/../std_developerskit
 synopsys = $MODEL_TECH/../synopsys
 modelsim_lib = $MODEL_TECH/../modelsim_lib
 sv_std = $MODEL_TECH/../sv_std
+mtiAvm = $MODEL_TECH/../avm
 mtiRnm = $MODEL_TECH/../rnm
+mtiOvm = $MODEL_TECH/../ovm-2.1.2
+mtiUvm = $MODEL_TECH/../uvm-1.1d
+mtiUPF = $MODEL_TECH/../upf_lib
+mtiPA  = $MODEL_TECH/../pa_lib
 floatfixlib = $MODEL_TECH/../floatfixlib
+mc2_lib = $MODEL_TECH/../mc2_lib
+flps_lib = $MODEL_TECH/../flps_lib
 osvvm = $MODEL_TECH/../osvvm
 
 ; added mapping for ADMS
@@ -64,12 +71,13 @@ ieee_env = $MODEL_TECH/../ieee_env
 ;mvc_lib = $MODEL_TECH/../mvc_lib
 infact = $MODEL_TECH/../infact
 vhdlopt_lib = $MODEL_TECH/../vhdlopt_lib
+vh_ux01v_lib = $MODEL_TECH/../vh_ux01v_lib
 
 ; Automatically perform logical->physical mapping for physical libraries that
 ; appear in -L/-Lf options with filesystem path delimiters (e.g. '.' or '/').
 ; The tail of the filesystem path name is chosen as the logical library name.
-; For example, in the command “vopt -L ./path/to/lib1 –o opttop top”,
-; vopt automatically performs the mapping “lib1 -> ./path/to/lib1”.
+; For example, in the command "vopt -L ./path/to/lib1 -o opttop top",
+; vopt automatically performs the mapping "lib1 -> ./path/to/lib1".
 ; See the User Manual for more details.
 ;
 ; AutoLibMapping = 0
@@ -90,6 +98,52 @@ UVMDEBUG = -uvmcontrol=all -msgmode both -displaymsgmode both -classdebug -onfin
 ; define a vopt optionset for debugging
 VOPTDEBUG = +acc -debugdb
 
+[encryption]
+; For vencrypt and vhencrypt.
+
+; Controls whether to encrypt whole files by ignoring all protect directives
+; (except "viewport" and "interface_viewport") that are present in the input.
+; The default is 0, use embedded protect directives to control the encryption.
+; Set this to 1 to encrypt whole files by ignoring embedded protect directives.
+; wholefile = 0
+
+; Sets the data_method to use for the symmetric session key.
+; The session key is a symmetric key that is randomly generated for each
+; protected region (envelope) and is the heart of all encryption.  This is used
+; to set the length of the session key to generate and use when encrypting the
+; HDL text.  Supported values are aes128, aes192, and aes256.
+; data_method = aes128
+
+; The following 2 are for specifying an IEEE Std. 1735 Version 2 (V2) encryption
+; "recipe" comprising an optional common block, at least one tool block (which
+; contains the key public key), and the text to be encrypted.  The common block
+; and any of the tool blocks may contain rights in the form of the "control"
+; directive.  The text to be encrypted is specified either by setting
+; "wholefile" to 1 or by embedding protect "begin" and "end" directives in
+; the input HDL files.
+
+; Common recipe specification file.  This file is optional.  Its presence will
+; require at least one "toolblock" to be specified.
+; Directives such as "author" "author_info" and "data_method",
+; as well as the common block license specification, go in this file.
+; common = <file name>
+
+; Tool block specification recipe(s).  Public key file with optional tool block
+; file name.  May be multiply-defined; at least one tool block is required if
+; a recipe is being specified.
+; Key file is a file name with no extension (.deprecated or .active will be
+; supplied by the encryption tool).
+; Rights file name is optional.
+; toolblock = <key file name>[,<rights file name>]{:<key file name>[,<rights file name>]}
+
+; Location of directory containing recipe files.
+; The default location is in the product installation directory.
+; keyring = $MODEL_TECH/../keyring
+
+; Enable encryption statistics. Specify one or more arguments: 
+;                   [all,none,time,cmd,msg,perf,verbose,list]
+; Add '-' to disable specific statistics. Default is [cmd,msg].
+Stats = cmd,msg
 
 [vcom]
 ; VHDL93 variable selects language version as the default. 
@@ -372,14 +426,19 @@ Explicit = 1
 ; Default is 1 (enabled)  
 ; CreateLib = 1
 
+; Describe compilation options according to matching file patterns.
+; File pattern * matches all printing characters other than '/'.
+; File pattern **/x matches all paths containing file/directory x.
+; File pattern x/** matches all paths beginning at directory x.
+; FileOptMap = (**/*.vhd => -2008);
+
+; Describe library targets of compilation according to matching file patterns.
+; LibMap = (**/*.vhd => work);
+
 [vlog]
 ; Turn off inclusion of debugging info within design units.
 ; Default is to include debugging info.
 ; NoDebug = 1
-
-; Turn on `protect compiler directive processing.
-; Default is to ignore `protect directives.
-; Protect = 1
 
 ; Turn off "Loading..." messages. Default is messages on.
 ; Quiet = 1
@@ -456,6 +515,11 @@ Explicit = 1
 ; in FEC table. This leads to a longer compile time with more expressions
 ; covered with FEC metric.
 ; CoverMaxFECRows = 192
+
+; Enable Multi Bit Expression Coverage in a Design, If design has expression with
+; multi bit operands, this option enables its Expression Coverage.
+; The default value is 0.
+; CoverFecMultiBit = 1
 
 ; Increase or decrease the limit on the size of expressions and conditions
 ; considered for expression and condition coverages. Higher FecUdpEffort leads 
@@ -582,7 +646,7 @@ Explicit = 1
 ; packages.  The behavior is identical to using the "-L" switch.
 ; 
 ; LibrarySearchPath = <path/lib> [<path/lib> ...]
-; LibrarySearchPath = infact
+LibrarySearchPath = mtiAvm mtiRnm mtiOvm mtiUvm mtiUPF infact
 
 ; The behavior is identical to the "-mixedansiports" switch.  Default is off.
 ; MixedAnsiPorts = 1
@@ -615,13 +679,13 @@ Explicit = 1
 
 ; This setting is the same as the vlog -sv command line switch.
 ; Enables SystemVerilog features and keywords when true (1).
-; When false (0), the rules of IEEE Std 1364-2001 are followed and 
+; When false (0), the rules of IEEE Std 1364-2005 are followed and 
 ; SystemVerilog keywords are ignored. 
 ; Svlog = 0
 
 ; Prints attribute placed upon SV packages during package import
 ; when true (1).  The attribute will be ignored when this
-; entry is false (0). The attribute name is "package_load_message".
+; entry is false (0). The attribute name is "mti_design_element_load_message".
 ; The value of this attribute is a string literal.
 ; Default is true (1).
 ; PrintSVPackageLoadingAttribute = 1
@@ -674,8 +738,8 @@ Explicit = 1
 ; CppPath = /usr/bin/g++
 
 ; Specify the compiler version from the list of support GNU compilers.
-; examples 4.3.3, 4.5.0
-; CppInstall = 4.5.0
+; examples 4.7.4, 5.3.0, 7.4.0
+; CppInstall = 7.4.0
 
 ; Enable verbose messages from sccom.  Default is off.
 ; SccomVerbose = 1
@@ -705,6 +769,9 @@ Explicit = 1
 ; Turn on code coverage in vopt.  Default is off. 
 ; Coverage = sbceft
 
+; enable or disable param saving in UCDB.
+; CoverageSaveParam = 0
+
 ; Control compiler optimizations that are allowed when
 ; code coverage is on.  Refer to the comment for this in the [vlog] area. 
 ; CoverOpt = 3
@@ -728,6 +795,11 @@ Explicit = 1
 ; in FEC table. This leads to a longer compile time with more expressions
 ; covered with FEC metric.
 ; CoverMaxFECRows = 192
+
+; Enable Multi Bit Expression Coverage in a Design, If design has expression with
+; multi bit operands, this option enables its Expression Coverage.
+; The default value is 0.
+; CoverFecMultiBit = 1
 
 ; Increase or decrease the limit on the size of expressions and conditions
 ; considered for expression and condition coverages. Higher FecUdpEffort leads 
@@ -801,7 +873,6 @@ Explicit = 1
 ; Default is 1 (enabled)  
 ; CreateLib = 1
 
-
 [vsim]
 ; vopt flow
 ; Set to turn on automatic optimization of a design.
@@ -828,7 +899,7 @@ Resolution = ns
 UserTimeUnit = default
 
 ; Default run length
-RunLength = 20 ns
+RunLength = 200 ns
 
 ; Maximum iterations that can be run without advancing simulation time
 IterationLimit = 10000000
@@ -1158,6 +1229,10 @@ ConcurrentFileLimit = 40
 ; Use custom gcc compiler located at this path rather than the default path.
 ; The path should point directly at a compiler executable.
 ; DpiCppPath = <your-gcc-installation>/bin/gcc
+;
+; Specify the compiler version from the list of support GNU compilers.
+; examples 4.7.4, 5.3.0, 7.4.0
+; DpiCppInstall = 7.4.0
 
 ; Specify whether to enable SystemVerilog DPI "out-of-the-blue" calls.
 ; The term "out-of-the-blue" refers to SystemVerilog export function calls
@@ -1350,6 +1425,13 @@ WildcardSizeThresholdVerbose = 0
 ; ScShowIeeeDeprecationWarnings = 1
 
 ; Turn on/off the check for multiple drivers on a SystemC sc_signal. Default is off.
+; For SystemC-2.3.2 the valid values are 0,1 and 2
+;     0 = SC_SIGNAL_WRITE_CHECK_DISABLE_
+;     1 = SC_SIGNAL_WRITE_CHECK_DEFAULT_
+;     2 = SC_SIGNAL_WRITE_CHECK_CONFLICT_
+; For SystemC-2.2 the valid values are 0 and 1
+;     0 = DISABLE
+;     1 = ENABLE
 ; ScEnableScSignalWriteCheck = 1
 
 ; Set SystemC default time unit.
@@ -1431,7 +1513,7 @@ OnFinish = ask
 ; AssertFile = assert.log
 
 ; Enable assertion counts. Default is off.
-; AssertionCover = 1
+; AssertionCounts = 1
 
 ; Run simulator in assertion debug mode. Default is off.
 ; AssertionDebug = 1
@@ -1781,13 +1863,14 @@ OnFinish = ask
 ;
 ; UndefSyms = off
 
-; Enable the support for checkpointing foreign C++ libraries.
-; The valid arguments are: 1 and 0. 
-;     1 : turn on the support
-;     0 : turn off the support (default)
+; Enable the support for checkpointing foreign C/C++ libraries.
+; The valid arguments are: 0, 1, 2 
+;    0: off  (default)
+;    1: on   (manually save/restore user shared library data)
+;    2: auto (automatically save/restore user shared library data)
 ; This option is not supported on the Windows platforms.
 ;
-; AllowCheckpointCpp = 1
+; AllowCheckpointCpp = 2
 
 ; Initial seed for the random number generator of the root thread (SystemVerilog).
 ; NOTE: This variable can be overridden with the vsim "-sv_seed" command line switch.
@@ -1810,48 +1893,71 @@ OnFinish = ask
 ; The default value is "auto".
 ; SolveEngine = auto
 
-; Specify if the solver should attempt to ignore overflow/underflow semantics
-; for arithmetic constraints (multiply, addition, subtraction) in order to
-; improve performance. The "solveignoreoverflow" attribute can be specified on
-; a per-call basis to randomize() to override this setting.
-; The default value is 0 (overflow/underflow is not ignored). Set to 1 to
-; ignore overflow/underflow.
-; SolveIgnoreOverflow = 0
-
 ; Specifies the maximum size that a dynamic array may be resized to by the
 ; solver. If the solver attempts to resize a dynamic array to a size greater
 ; than the specified limit, the solver will abort with an error.
 ; The default value is 10000. A value of 0 indicates no limit.
 ; SolveArrayResizeMax = 10000
 
-; Error message severity when randomize() failure is detected.
+; Specify error message severity when randomize() and randomize(null) failures
+; are detected.
+;
+; Integer value up to two digits are allowed with each digit having the following legal values:
 ; 0 = No error  1 = Warning  2 = Error  3 = Failure  4 = Fatal
-; The default is 0 (no error).
-; SolveFailSeverity = 0
+;
+; 1) When a value with two digits is used, the digit at tenth place (leftmost digit) represents
+;    the severtity setting for normal randomize() calls. The digit at ones place (rightmost digit)
+;    represents the setting for randomize(null) calls.
+;
+; 2) When a single digit value is used, the setting is applied to both normal randomize() call 
+;    and randomize(null) call.
+;
+; Example: Fatal error for randomize() failures and NO error for randomize(null) failures
+;   -solvefailseverity=40
+;
+; NOTE: SolveFailSeverity can affect the behavior of SolveFailDebug. When SolveFailDebug is
+; enabled, a constraint contradiction report will be displayed for randomize() calls that
+; have a message severity >= warning (i.e. constraint contradiction reports will not be
+; generated for randomize() calls having a "no error" severity level)
+;
+; NOTE: This variable can be overridden with the vsim "-solvefailseverity" command
+; line switch.
+;
+; The default is 1 (warning).
+; SolveFailSeverity = 1
 
 ; Error message severity for suppressible errors that are detected in a
 ; solve/before constraint.
+; 0 = No error  1 = Warning  2 = Error  3 = Failure  4 = Fatal
 ; NOTE: This variable can be overridden with the vsim "-solvebeforeerrorseverity"
 ; command line switch.
-; 0 = No error  1 = Warning  2 = Error  3 = Failure  4 = Fatal
 ; The default is 3 (failure).
 ; SolveBeforeErrorSeverity = 3
 
 ; Error message severity for suppressible errors that are related to
 ; solve engine capacity limits
+; 0 = No error  1 = Warning  2 = Error  3 = Failure  4 = Fatal
 ; NOTE: This variable can be overridden with the vsim "-solveengineerrorseverity"
 ; command line switch.
-; 0 = No error  1 = Warning  2 = Error  3 = Failure  4 = Fatal
 ; The default is 3 (failure).
 ; SolveEngineErrorSeverity = 3
 
-; Enable/disable debug information for randomize() failures.
+; Enable/disable constraint conflicts on randomize() failure
+; Valid values:
+;     0 - disable solvefaildebug
+;     1 - basic debug (no performance penalty)
+;     2 - enhanced debug (runtime performance penalty)
+;
+; NOTE: SolveFailSeverity can affect the behavior of SolveFailDebug. When SolveFailDebug is
+; enabled, a constraint contradiction report will be displayed for randomize() calls that
+; have a message severity >= warning (i.e. constraint contradiction reports will not be
+; generated for randomize() calls having a "no error" severity level)
+;
 ; NOTE: This variable can be overridden with the vsim "-solvefaildebug" command
 ; line switch.
-; The default is 0 (disabled). Set to 1 to enable basic debug (with no
-; performance penalty). Set to 2 for enhanced debug (will result in slower
-; runtime performance).
-; SolveFailDebug = 0
+;
+; The default is 1 (basic debug).
+; SolveFailDebug = 1
 
 ; Upon encountering a randomize() failure, generate a simplified testcase that
 ; will reproduce the failure. Optionally output the testcase to a file.
@@ -1869,6 +1975,12 @@ OnFinish = ask
 ; The default value is 500. A value of 0 will disable timeout failures. 
 ; SolveTimeout = 500
 
+; Specify the alternative behavior during solver replay. Must be used when combined with -solvereplay switch.
+; SolveReplayOpt=[+|-]<opt>[,[+|-]<opt>]*"
+' Valid <opt> settings:
+;    validate : toggle the checking of value changes of non-random variables involved in randomize(). (default is off)"
+; SolveReplayOpt=validate
+
 ; Specify the maximum size of the solution graph generated by the BDD solver.
 ; This value can be used to force the BDD solver to abort the evaluation of a
 ; complex constraint scenario that cannot be evaluated with finite memory.
@@ -1883,26 +1995,10 @@ OnFinish = ask
 ; The default value is 10000. A value of 0 indicates no limit.
 ; SolveGraphMaxEval = 10000
 
-; Specify the maximum number of tests that the ACT solver may evaluate before
-; abandoning an attempt to solve a particular constraint scenario.
-; The default value is 2000000.  A value of 0 indicates no limit.
-; SolveACTMaxTests = 2000000
-
-; Specify the maximum number of operations that the ACT solver may perform 
-; before abandoning an attempt to solve a particular constraint scenario.  The 
-; value is specified in 1000000s of operations.
-; The default value is 10000. A value of 0 indicates no limit.
-; SolveACTMaxOps = 10000
-
-; Specify the number of times the ACT solver will retry to evaluate a constraint
-; scenario that fails due to the SolveACTMax[Tests|Ops] threshold.
-; The default value is 0 (no retry).
-; SolveACTRetryCount = 0
-
-; Specify random sequence compatiblity with a prior letter release. This 
+; Specify random sequence compatiblity with a prior release. This 
 ; option is used to get the same random sequences during simulation as
-; as a prior letter release. Only prior letter releases (of the current
-; number release) are allowed.
+; as a prior release. Only prior releases with the same major version
+; as the current release are allowed.
 ; NOTE: Only those random sequence changes due to solver optimizations are
 ; reverted by this variable. Random sequence changes due to solver bugfixes
 ; cannot be un-done.
@@ -1934,7 +2030,7 @@ DumpportsCollapse = 1
 
 ; Location of Multi-Level Verification Component (MVC) installation. 
 ; The default location is the product installation directory.
-MvcHome = $MODEL_TECH/..
+MvcHome = $QUESTA_MVC_HOME
 
 ; Location of InFact installation. The default is $MODEL_TECH/../../infact
 ;
@@ -1949,29 +2045,35 @@ MvcHome = $MODEL_TECH/..
 
 ; Enable/disable non-LRM compliant SystemVerilog language extensions.
 ; Valid extensions are:
-;   cfce        - generate an error if $cast fails as a function
-;   dfsp        - sets default format specifier as %p, if no format specifier is given for unpacked array in $display and related systasks
-;   expdfmt     - enable format string extensions for $display/$sformatf
-;   extscan     - support values greater than 32 bit for string builtin methods (atohex, atobin, atooct, atoi)
-;   fmtcap      - prints capital hex digits with %X/%H in display calls
-;   iddp        - ignore DPI disable protocol check
-;   noexptc     - ignore DPI export type name overloading check
-;   lfmt        - zero-pad data if '0' prefixes width in format specifier (e.g. "%04h")
-;   realrand    - support randomize() with real variables and constraints (Default)
+;   altdpiheader - Alternative style function signature generated in DPI header",
+;   cfce         - generate an error if $cast fails as a function
+;   cfmt         - C like formatting for specifiers with '#' prefix ('%#x', '%#h')
+;   dfsp         - sets default format specifier as %p, if no format specifier is given for unpacked array in $display and related systasks
+;   expdfmt      - enable format string extensions for $display/$sformatf
+;   extscan      - support values greater than 32 bit for string builtin methods (atohex, atobin, atooct, atoi)
+;   fmtcap       - prints capital hex digits with %X/%H in display calls
+;   iddp         - ignore DPI disable protocol check
+;   lfmt         - zero-pad data if '0' prefixes width in format specifier (e.g. "%04h")
+;   noexptc      - ignore DPI export type name overloading check
+;   realrand     - support randomize() with real variables and constraints (Default)
 ; SvExtensions = [+|-]<extension>[,[+|-]<extension>*]
 
 ; Enable/disable non-LRM compliant SystemVerilog constrained-random language extensions.
 ; Valid extensions are:
-l   arraymode    - consider rand_mode of unpacked array field independently from its elements
-;   deepcheck    - allow randomize(null) to recursively consider constraints from member rand class handles  
-;   forkjoinstab - preserve parent thread random stability when seeding fork/join sub-threads (Default)
-;   nonrandstab  - disable seeding of "non-random" class instances (Default)
+;   arraymode    - consider rand_mode of unpacked array field independently from its elements
+;   deepcheck    - allow randomize(null) to recursively consider constraints from member rand class handles (Default)
+;   funcback     - enable function backtracking (ACT only)
+;   genmodseedfix - enable LRM-compliant seeding of module/interface instances under for-generate blocks (Default)
 ;   nodist       - interpret 'dist' constraint as 'inside' (ACT only)
 ;   noorder      - ignore solve/before ordering constraints (ACT only)
-;   packrandidx  - allow random index for packed variable in constraint (Default)
+;   pathseed     - enable unique seeding of module instances based on hierarchical path name
+;   prerandfirst - execute all pre_randomize() functions before evaluating any constraints
 ;   promotedist  - promote priority of 'dist' constraint if LHS has no solve/before
+;   purecheck    - suppress pre_randomize() and post_randomize() calls for randomize(null) 
+;   randindex    - allow random index in constraint (Default)
 ;   randstruct   - consider all fields of unpacked structs as 'rand'
 ;   skew         - skew randomize results (ACT only)
+;   strictstab   - strict random stability
 ; SvRandExtensions = [+|-]<extension>[,[+|-]<extension>*]
 
 ; Controls the formatting of '%p' and '%P' conversion specification, used in $display
@@ -2099,7 +2201,7 @@ suppress = 8780 ;an explanation can be had by running: verror 8780
 ; FlatLibPageDeleteThreshold = 1000
 
 [Project]
-; Warning -- Do not edit the project properties directly.
+** Warning: ; Warning -- Do not edit the project properties directly.
 ;            Property names are dynamic in nature and property
 ;            values have special syntax.  Changing property data directly
 ;            can result in a corrupt MPF file.  All project properties
@@ -2107,35 +2209,37 @@ suppress = 8780 ;an explanation can be had by running: verror 8780
 Project_Version = 6
 Project_DefaultLib = work
 Project_SortMethod = unused
-Project_Files_Count = 14
-Project_File_0 = E:/risc_v_project/phase2/rtl/pc_reg.v
-Project_File_P_0 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 folder {Top Level} cover_branch 0 cover_fsm 0 last_compile 1650512854 vlog_noload 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 cover_optlevel 3 vlog_showsource 0 vlog_hazard 0 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 9 cover_expr 0 dont_compile 0 cover_stmt 0
-Project_File_1 = E:/risc_v_project/phase2/rtl/id_ex.v
-Project_File_P_1 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650509381 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 5 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_2 = E:/risc_v_project/phase2/tb/tb.v
-Project_File_P_2 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 vlog_noload 0 last_compile 1650521074 folder {Top Level} cover_branch 0 cover_fsm 0 vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 13 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_3 = E:/risc_v_project/phase2/rtl/if_id.v
-Project_File_P_3 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650509381 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 6 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_4 = E:/risc_v_project/phase2/rtl/id.v
-Project_File_P_4 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 vlog_noload 0 last_compile 1650516668 folder {Top Level} cover_branch 0 cover_fsm 0 vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 4 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_5 = E:/risc_v_project/phase2/rtl/ex.v
-Project_File_P_5 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 folder {Top Level} cover_branch 0 cover_fsm 0 last_compile 1650520488 vlog_noload 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 cover_optlevel 3 vlog_showsource 0 vlog_hazard 0 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 3 cover_expr 0 dont_compile 0 cover_stmt 0
-Project_File_6 = E:/risc_v_project/phase2/rtl/rom.v
-Project_File_P_6 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650194513 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 11 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_7 = E:/risc_v_project/phase2/rtl/defines.v
-Project_File_P_7 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650124641 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 1 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_8 = E:/risc_v_project/phase2/tb/open_risc_v_soc.v
-Project_File_P_8 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650511818 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 12 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_9 = E:/risc_v_project/phase2/rtl/open_risc_v.v
-Project_File_P_9 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 vlog_noload 0 last_compile 1650516454 folder {Top Level} cover_branch 0 cover_fsm 0 vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 8 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_10 = E:/risc_v_project/phase2/rtl/regs.v
-Project_File_P_10 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650186404 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 10 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_11 = E:/risc_v_project/phase2/rtl/ifetch.v
-Project_File_P_11 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650183708 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 7 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_12 = E:/risc_v_project/phase2/rtl/dff_set.v
-Project_File_P_12 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 last_compile 1650509358 vlog_noload 0 cover_branch 0 folder {Top Level} vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 vlog_hazard 0 vlog_showsource 0 cover_optlevel 3 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 2 dont_compile 0 cover_expr 0 cover_stmt 0
-Project_File_13 = E:/risc_v_project/phase2/rtl/ctrl.v
-Project_File_P_13 = cover_toggle 0 vlog_protect 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 folder {Top Level} cover_branch 0 cover_fsm 0 last_compile 1650520488 vlog_noload 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 cover_optlevel 3 vlog_showsource 0 vlog_hazard 0 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 0 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_Files_Count = 15
+Project_File_0 = D:/risc_v_project/phase2_old/rtl/if_id.v
+Project_File_P_0 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650509381 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 9 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_1 = D:/risc_v_project/phase2_old/rtl/ifetch.v
+Project_File_P_1 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650183708 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 10 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_2 = D:/risc_v_project/phase2_old/rtl/ctrl.v
+Project_File_P_2 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650520488 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 2 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_3 = D:/risc_v_project/phase2_old/rtl/rom.v
+Project_File_P_3 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650194513 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 14 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_4 = D:/risc_v_project/phase2_old/rtl/defines.v
+Project_File_P_4 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650124641 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 3 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_5 = D:/risc_v_project/phase2_old/rtl/open_risc_v.v
+Project_File_P_5 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650516454 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 11 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_6 = D:/risc_v_project/phase2_old/rtl/pc_reg.v
+Project_File_P_6 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650512854 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 12 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_7 = D:/risc_v_project/phase2_old/rtl/dff_set.v
+Project_File_P_7 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650509358 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 4 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_8 = D:/risc_v_project/phase2_old/rtl/diff_set.v
+Project_File_P_8 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1686388753 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 5 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_9 = D:/risc_v_project/phase2_old/rtl/ex.v
+Project_File_P_9 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650520488 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 6 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_10 = D:/risc_v_project/phase2_old/rtl/id.v
+Project_File_P_10 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650516668 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 7 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_11 = D:/risc_v_project/phase2_old/tb/open_risc_v_soc.v
+Project_File_P_11 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_fsm 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650511818 vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 cover_optlevel 3 vlog_hazard 0 vlog_showsource 0 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 0 dont_compile 0 cover_expr 0 cover_stmt 0
+Project_File_12 = D:/risc_v_project/phase2_old/rtl/regs.v
+Project_File_P_12 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650186404 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 13 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_13 = D:/risc_v_project/phase2_old/rtl/id_ex.v
+Project_File_P_13 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 cover_branch 0 vlog_noload 0 folder {Top Level} last_compile 1650509381 cover_fsm 0 cover_excludedefault 0 vlog_enable0In 0 vlog_disableopt 0 cover_covercells 0 voptflow 1 vlog_showsource 0 vlog_hazard 0 cover_optlevel 3 toggle - vlog_0InOptions {} ood 0 cover_noshort 0 vlog_upper 0 compile_to work vlog_options {} compile_order 8 cover_expr 0 dont_compile 0 cover_stmt 0
+Project_File_14 = D:/risc_v_project/phase2_old/tb/tb.v
+Project_File_P_14 = cover_toggle 0 file_type verilog group_id 0 cover_exttoggle 0 cover_nofec 0 cover_cond 0 vlog_1995compat 0 vlog_nodebug 0 folder {Top Level} last_compile 1686554243 cover_fsm 0 cover_branch 0 vlog_noload 0 vlog_enable0In 0 cover_excludedefault 0 vlog_disableopt 0 cover_covercells 0 cover_optlevel 3 vlog_hazard 0 vlog_showsource 0 voptflow 1 ood 0 vlog_0InOptions {} toggle - vlog_options {} compile_to work vlog_upper 0 cover_noshort 0 compile_order 1 dont_compile 0 cover_expr 0 cover_stmt 0
 Project_Sim_Count = 0
 Project_Folder_Count = 0
 Echo_Compile_Output = 0
@@ -2183,5 +2287,5 @@ DEBUGDATABASE_DoubleClick = Edit
 DEBUGDATABASE_CustomDoubleClick = 
 DEBUGARCHIVE_DoubleClick = Edit
 DEBUGARCHIVE_CustomDoubleClick = 
-Project_Major_Version = 10
-Project_Minor_Version = 6
+Project_Major_Version = 2020
+Project_Minor_Version = 4

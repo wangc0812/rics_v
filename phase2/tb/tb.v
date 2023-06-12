@@ -1,32 +1,30 @@
 module tb;
-    
-    reg clk;
-    reg rst;
 
-    // 寄存器x3：表示我们第几个test
-    // 寄存器x26：表示我们测试结束 x26 =1
-    // 寄存器x27：为0时表示fail，为1时表示pass
-    wire x3 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[3];
-    wire x26 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[26];
-    wire x27 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[27];
-
-
-
-    always #10 clk = ~clk;
-
-    initial begin
-        rst <= 1'b0;
-        clk <= 1'b0;
-        #30;
-        rst <= 1'b1;
-    end
-
-    // rom initial
-    initial begin
-		$readmemh("./inst_txt/rv32ui-p-add.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
+	reg clk;
+	reg rst;
+	
+	
+	wire x3 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[3];
+	wire x26 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[26];
+	wire x27 = tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[27];
+	
+	
+	always #10 clk = ~clk;
+	
+	initial begin
+		clk <= 1'b1;
+		rst <= 1'b0;
+		#30;
+		rst <= 1'b1;	
+	end
+	
+	//rom 初始值
+	initial begin
+		$readmemh("./inst_txt/rv32ui-p-addi.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
 	end
 
-    integer r;
+
+	integer r;
 	initial begin
 /* 		while(1)begin
 			@(posedge clk) 
@@ -54,13 +52,12 @@ module tb;
 			end	
 		end
 	end
+	
+	open_risc_v_soc open_risc_v_soc_inst(
+		.clk   		(clk),
+		.rst 		(rst)
+	);
 
 
-
-
-    open_risc_v_soc open_risc_v_soc_inst(
-        .clk        (clk),
-        .rst        (rst)
-    );
-
+	
 endmodule
