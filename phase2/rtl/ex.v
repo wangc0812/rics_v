@@ -40,9 +40,13 @@ module ex(
 	// branch
 	wire[31:0] jump_imm = {{19{inst_i[31]}},inst_i[31],inst_i[7],inst_i[30:25],inst_i[11:8],1'b0}; //改 21+6+4+1
 	wire  	   op1_i_equal_op2_i;
-	 
-	assign	   op1_i_equal_op2_i = (op1_i == op2_i)?1'b1:1'b0;
+	wire 	   op1_i_less_op2_i_signed;
 	
+	assign	   op1_i_equal_op2_i       = (op1_i == op2_i)?1'b1:1'b0;
+	assign	   op1_i_less_op2_i_signed = ($signed(op1_i) < $signed(op2_i))?1'b1:1'b0;
+
+	// Type I
+
 	
 	always @(*)begin
 		
@@ -51,11 +55,56 @@ module ex(
 				jump_addr_o = 32'b0;
 				jump_en_o	= 1'b0;
 				hold_flag_o = 1'b0;			
-				case(func3)				
+				case(func3)			
 					`INST_ADDI:begin
 						rd_data_o = op1_i + op2_i;
 						rd_addr_o = rd_addr_i;
 						rd_wen_o  = 1'b1;
+					end
+
+					`INST_SLTI:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_SLTIU:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_XORI:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_ORI:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_ADNI:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_SLLI:begin
+						rd_data_o = op1_i + op2_i;
+						rd_addr_o = rd_addr_i;
+						rd_wen_o  = 1'b1;
+					end
+
+					`INST_SRI:begin
+						if (func7[5] == 1'b1) begin // SRAI
+							
+						end
+						else begin   // SRLI
+						  
+						end
 					end
 					default:begin
 						rd_data_o = 32'b0;
@@ -130,7 +179,7 @@ module ex(
 				jump_en_o	= 1'b0;
 				hold_flag_o = 1'b0;			
 			end	
-						
+
 			default:begin
 				rd_data_o = 32'b0;
 				rd_addr_o = 5'b0;

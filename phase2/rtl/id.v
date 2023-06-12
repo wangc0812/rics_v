@@ -60,7 +60,7 @@ module id(
 						rd_addr_o  = rd;
 						reg_wen    = 1'b1;
 					end
-					`INST_SLLI, `INST_SRLI, `INST_SRAI:begin
+					`INST_SLLI, `INST_SRI:begin
 					    rs1_addr_o = rs1;
 						rs2_addr_o = 5'b0;
 						op1_o 	   = rs1_data_i;
