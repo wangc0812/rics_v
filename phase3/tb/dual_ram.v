@@ -16,12 +16,21 @@ module dual_ram #(
 
 reg rd_wr_equ_flag;
 
+reg [31:0] w_data_reg;
+wire[31:0] r_data_wire;
+assign r_data_o = rd_wr_equ_flag ? w_data_i : r_data_wire;
+
+always @(posedge clk) begin
+    w_data_reg <= w_data_i;
+end
+
 always @(posedge clk) begin
     if(rst && w_en && r_en &&  r_addr_i == w_addr_i)
         rd_wr_equ_flag <= 1'b1;
     else
         rd_wr_equ_flag <= 1'b0;
 end
+
 
 dual_ram_template #(
     .DW         (DW),
@@ -36,7 +45,7 @@ dual_ram_template #(
     .w_data_i   (w_data_i),
     .r_en       (r_en),
     .r_addr_i   (r_addr_i),
-    .r_data_o   (r_data_o )
+    .r_data_o   (r_data_wire)
 );
 
 endmodule
