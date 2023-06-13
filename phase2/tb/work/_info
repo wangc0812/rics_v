@@ -10,10 +10,10 @@ z2
 cModel Technology
 Z0 dE:/lianxi/phase1
 T_opt
-!s110 1686561315
-V5Ol3ENOY[a7FDEfPdeYzG3
+!s110 1686635579
+V:?FXH?bUOL03EYR11<G[Z0
 Z1 04 2 4 work tb fast 0
-=1-b07b25297306-6486e222-367-8aa8
+=1-b07b25297306-6488043b-de-5378
 Z2 o-quiet -auto_acc_if_foreign -work work +acc
 Z3 tCvgOpt 0
 n@_opt
@@ -29,7 +29,7 @@ n@_opt2
 R4
 R0
 vctrl
-Z5 !s110 1686561308
+Z5 !s110 1686635572
 !i10b 1
 !s100 nmZ3]MbZ2K[6TVLW6GH4J2
 Z6 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -38,14 +38,14 @@ Z7 dD:/risc_v_project/phase2/tb
 w1650520488
 8D:/risc_v_project/phase2/rtl/ctrl.v
 FD:/risc_v_project/phase2/rtl/ctrl.v
-!i122 309
+!i122 379
 L0 1 25
 Z8 VDg1SIo80bB@j0V0VzS_@n1
 Z9 OL;L;2020.4;71
 r1
 !s85 0
 31
-Z10 !s108 1686561308.000000
+Z10 !s108 1686635572.000000
 !s107 D:/risc_v_project/phase2/rtl/ctrl.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/risc_v_project/phase2/rtl/ctrl.v|
 !i113 0
@@ -61,7 +61,7 @@ R7
 w1686388753
 8D:/risc_v_project/phase2/rtl/diff_set.v
 FD:/risc_v_project/phase2/rtl/diff_set.v
-!i122 311
+!i122 381
 L0 1 20
 R8
 R9
@@ -77,15 +77,15 @@ R3
 vex
 R5
 !i10b 1
-!s100 b4^D4B:kIJUI14aj1YF]m2
+!s100 50C[jUfK9zg[5;<Z[=?3i0
 R6
-Ifo5R?TVI4DeK1dFB8TghT0
+I[l_nN6YL<lBdQN5P_Q:lk3
 R7
-w1686561048
+w1686635364
 8D:/risc_v_project/phase2/rtl/ex.v
 FD:/risc_v_project/phase2/rtl/ex.v
-!i122 312
-L0 3 259
+!i122 382
+L0 3 279
 R8
 R9
 r1
@@ -100,14 +100,14 @@ R3
 vid
 R5
 !i10b 1
-!s100 lEM[ncSdJJG?<j9l;7`7O3
+!s100 X4l3fAWf80Vo3EMJ6P]:D2
 R6
-IQ58OkK8gHAzCicYa2YzI]0
+I?dA7U_Y36FXC[8^fRU<D_3
 R7
-w1686560162
+w1686635001
 8D:/risc_v_project/phase2/rtl/id.v
 FD:/risc_v_project/phase2/rtl/id.v
-!i122 313
+!i122 383
 L0 4 146
 R8
 R9
@@ -121,16 +121,16 @@ R10
 R11
 R3
 vid_ex
-R5
+Z12 !s110 1686635573
 !i10b 1
 !s100 HRfXeomk;6cmagR?[e8jc3
 R6
 I<EIhel007@j_kbWNcA3?22
 R7
-Z12 w1650509381
+Z13 w1650509381
 8D:/risc_v_project/phase2/rtl/id_ex.v
 FD:/risc_v_project/phase2/rtl/id_ex.v
-!i122 314
+!i122 384
 L0 3 38
 R8
 R9
@@ -144,30 +144,30 @@ R10
 R11
 R3
 vif_id
-R5
+R12
 !i10b 1
 !s100 VIlP0=gKVaNX<>L[<`TV80
 R6
 IjMV=_=bMGNB`FfHAlNNZS2
 R7
-R12
+R13
 8D:/risc_v_project/phase2/rtl/if_id.v
 FD:/risc_v_project/phase2/rtl/if_id.v
-!i122 315
+!i122 385
 L0 3 17
 R8
 R9
 r1
 !s85 0
 31
-R10
+Z14 !s108 1686635573.000000
 !s107 D:\risc_v_project\phase2\rtl\defines.v|D:/risc_v_project/phase2/rtl/if_id.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/risc_v_project/phase2/rtl/if_id.v|
 !i113 0
 R11
 R3
 vifetch
-Z13 !s110 1686561309
+R12
 !i10b 1
 !s100 Ic[e9bEkGV4Wh[iVni1i<1
 R6
@@ -176,21 +176,21 @@ R7
 w1650183708
 8D:/risc_v_project/phase2/rtl/ifetch.v
 FD:/risc_v_project/phase2/rtl/ifetch.v
-!i122 316
+!i122 386
 L0 1 22
 R8
 R9
 r1
 !s85 0
 31
-Z14 !s108 1686561309.000000
+R14
 !s107 D:/risc_v_project/phase2/rtl/ifetch.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/risc_v_project/phase2/rtl/ifetch.v|
 !i113 0
 R11
 R3
 vopen_risc_v
-R13
+R12
 !i10b 1
 !s100 KFG0QEO[W;g;34=OMU=oW2
 R6
@@ -199,7 +199,7 @@ R7
 w1650516454
 8D:/risc_v_project/phase2/rtl/open_risc_v.v
 FD:/risc_v_project/phase2/rtl/open_risc_v.v
-!i122 317
+!i122 387
 L0 1 167
 R8
 R9
@@ -222,7 +222,7 @@ R7
 w1650511818
 8D:/risc_v_project/phase2/tb/open_risc_v_soc.v
 FD:/risc_v_project/phase2/tb/open_risc_v_soc.v
-!i122 307
+!i122 377
 L0 1 26
 R8
 R9
@@ -236,7 +236,7 @@ R10
 R11
 R3
 vpc_reg
-R13
+R12
 !i10b 1
 !s100 YOaH3M6GWDOL]iaW7N<^<3
 R6
@@ -245,7 +245,7 @@ R7
 w1650512854
 8D:/risc_v_project/phase2/rtl/pc_reg.v
 FD:/risc_v_project/phase2/rtl/pc_reg.v
-!i122 318
+!i122 388
 L0 1 18
 R8
 R9
@@ -259,7 +259,7 @@ R14
 R11
 R3
 vregs
-R13
+R12
 !i10b 1
 !s100 g6YM=Qi:CGdahNNGOiDD<1
 R6
@@ -268,7 +268,7 @@ R7
 w1686555197
 8D:/risc_v_project/phase2/rtl/regs.v
 FD:/risc_v_project/phase2/rtl/regs.v
-!i122 319
+!i122 389
 L0 1 54
 R8
 R9
@@ -282,7 +282,7 @@ R14
 R11
 R3
 vrom
-R13
+R12
 !i10b 1
 !s100 GABLh8dJPaJRYMKg0Lj`20
 R6
@@ -291,7 +291,7 @@ R7
 w1650194513
 8D:/risc_v_project/phase2/rtl/rom.v
 FD:/risc_v_project/phase2/rtl/rom.v
-!i122 320
+!i122 390
 L0 1 12
 R8
 R9
@@ -307,14 +307,14 @@ R3
 vtb
 R5
 !i10b 1
-!s100 nF6DX]98G67z0OE<aj^N43
+!s100 1bek141@l16WYm@bl]@_b0
 R6
-IUCk4[74?1:fMC]zJIa4j72
+IHjG2L4587:akc8`@5Rm`D0
 R7
-w1686561302
+w1686635567
 8D:/risc_v_project/phase2/tb/tb.v
 FD:/risc_v_project/phase2/tb/tb.v
-!i122 308
+!i122 378
 L0 1 63
 R8
 R9
