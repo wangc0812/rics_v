@@ -37,7 +37,7 @@ dual_ram_template #(
     .AW         (AW),
     .MEM_NUM    (MEM_NUM)
 ) dual_ram_template_inst
-(.
+(
     .clk        (clk),
     .rst        (rst),
     .w_en       (w_en),
@@ -49,17 +49,6 @@ dual_ram_template #(
 );
 
 endmodule
-
-
-
-
-
-
-
-
-
-
-
 
 
 module dual_ram_template #(

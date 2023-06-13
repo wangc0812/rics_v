@@ -20,7 +20,7 @@ module tb;
 	
 	//rom 初始值
 	initial begin
-		$readmemh("./inst_txt/rv32ui-p-xor.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
+		$readmemh("./generated/inst_data.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
 	end
 
 
@@ -51,6 +51,8 @@ module tb;
 				$display("x%2d register value is %d",r,tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[r]);	
 			end	
 		end
+
+		$finish();
 	end
 	
 	open_risc_v_soc open_risc_v_soc_inst(
