@@ -98,7 +98,7 @@ module id(
 			end
 			`INST_TYPE_B:begin
 				case(func3)
-					`INST_BNE,`INST_BEQ:begin
+					`INST_BNE, `INST_BEQ, `INST_BLT, `INST_BLTU, `INST_BGE,`INST_BGEU:begin
 						rs1_addr_o = rs1;
 						rs2_addr_o = rs2;
 						op1_o 	   = rs1_data_i;

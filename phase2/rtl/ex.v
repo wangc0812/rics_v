@@ -217,6 +217,26 @@ module ex(
 						jump_addr_o = (inst_addr_i + jump_imm) & {32{(~op1_i_equal_op2_i)}};
 						jump_en_o	= ~op1_i_equal_op2_i;
 						hold_flag_o = 1'b0;					
+					end
+					`INST_BLT:begin
+						jump_addr_o = (inst_addr_i + jump_imm) & {32{(op1_i_less_op2_i_signed)}};
+						jump_en_o	= op1_i_less_op2_i_signed;
+						hold_flag_o = 1'b0;					
+					end
+					`INST_BLTU:begin
+						jump_addr_o = (inst_addr_i + jump_imm) & {32{(op1_i_less_op2_i_unsigned)}};
+						jump_en_o	= op1_i_less_op2_i_unsigned;
+						hold_flag_o = 1'b0;					
+					end
+					`INST_BGE:begin
+						jump_addr_o = (inst_addr_i + jump_imm) & {32{(~op1_i_less_op2_i_signed)}};
+						jump_en_o	= ~op1_i_less_op2_i_signed;
+						hold_flag_o = 1'b0;					
+					end
+					`INST_BGEU:begin
+						jump_addr_o = (inst_addr_i + jump_imm) & {32{(~op1_i_less_op2_i_unsigned)}};
+						jump_en_o	= ~op1_i_less_op2_i_unsigned;
+						hold_flag_o = 1'b0;					
 					end	
 					default:begin
 						jump_addr_o = 32'b0;
