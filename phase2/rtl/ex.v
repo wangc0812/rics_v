@@ -28,7 +28,7 @@ module ex(
 	wire[4:0] rs2;
 	wire[6:0] func7;
 	wire[11:0]imm;
-	// wire[4:0] shamt;
+	wire[4:0] shamt;
 	
 	assign opcode = inst_i[6:0];
 	assign rd 	  = inst_i[11:7];
@@ -37,7 +37,7 @@ module ex(
 	assign rs2 	  = inst_i[24:20];
 	assign func7  = inst_i[31:25];
 	assign imm    = inst_i[31:20];
-	// assign shamt  = inst_i[24:20];
+	assign shamt  = inst_i[24:20];
 	
 	
 	
@@ -239,7 +239,7 @@ module ex(
 						hold_flag_o = 1'b0;					
 					end
 					`INST_BLT:begin
-						jump_addr_o = base_addr_add_addr_offset};
+						jump_addr_o = base_addr_add_addr_offset;
 						jump_en_o	= op1_i_less_op2_i_signed;
 						hold_flag_o = 1'b0;					
 					end
@@ -267,7 +267,7 @@ module ex(
 			end
 
 			`INST_JAL:begin
-				rd_data_o   = op1_i_and_op2_i;
+				rd_data_o   = op1_i_add_op2_i;
 				rd_addr_o   = rd_addr_i;
 				rd_wen_o    = 1'b1;
 				jump_addr_o = base_addr_add_addr_offset;
@@ -276,7 +276,7 @@ module ex(
 			end
 
 			`INST_JALR:begin
-				rd_data_o = op1_i_and_op2_i;
+				rd_data_o = op1_i_add_op2_i;
 				rd_addr_o = rd_addr_i;
 				rd_wen_o  = 1'b1;
 				jump_addr_o = base_addr_add_addr_offset;
