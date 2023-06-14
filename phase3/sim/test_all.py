@@ -2,11 +2,16 @@ import os
 import subprocess
 import sys
 
-from compile_and_sim import compile
-from compile_and_sim import list_binfiles
-from compile_and_sim import sim
-from compile_and_sim import bin_to_mem
+def list_binfiles(path):
+    files = []
+    list_dir = os.walk(path)
+    for maindir, subdir, all_file in list_dir:
+        for filename in all_file:
+            apath = os.path.join(maindir, filename)
+            if apath.endswith('.bin'):
+                files.append(apath)
 
+    return files
 
 def main():
     # 获取上一级路径
@@ -20,14 +25,13 @@ def main():
         r = f.read()
 
         index = file_bin.index('-p-')
-        print_name = file_bin[index + 3:-4]
+        print_name = file_bin[index+3:-4]
 
-        if r.find('pass') != -1:
-            print('instruction  ' + print_name.ljust(10, ' ') + '    PASS')
+        if (r.find('pass') != -1):
+            print('指令  ' + print_name.ljust(10, ' ') + '    PASS')
         else:
-            print('instruction  ' + print_name.ljust(10, ' ') + '    !!!FAIL!!!')
+            print('指令  ' + print_name.ljust(10, ' ') + '    !!!FAIL!!!')
         f.close()
-
 
 if __name__ == '__main__':
     main()

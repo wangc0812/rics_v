@@ -1,0 +1,36 @@
+module dual_ram #(
+	parameter DW      = 32	 ,
+	parameter AW      = 12	 ,
+	parameter MEM_NUM = 4096
+)
+(
+	input  wire 		  clk		,
+	input  wire 		  rst		,
+	input  wire 		  wen		,//写端口
+	input  wire[AW-1:0]   w_addr_i	,
+	input  wire[DW-1:0]   w_data_i	,
+	input  wire 		  ren		,//读端口	
+	input  wire[AW-1:0]   r_addr_i	,
+	output reg [DW-1:0]   r_data_o	
+);
+	reg[DW-1:0] memory[0:MEM_NUM-1];
+
+	//读端口操作
+	always @(posedge clk)begin
+		if(rst) begin
+			if(ren && r_addr_i == w_addr_i)
+				r_data_o <= w_data_i;
+			else if(ren)
+				r_data_o <= memory[r_addr_i];
+		end
+		
+		
+	end
+
+	//写端口操作
+	always @(posedge clk)begin
+		if(rst && wen)
+			memory[w_addr_i] <= w_data_i ;
+	end
+	
+endmodule

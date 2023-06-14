@@ -1,0 +1,120 @@
+E:/lianxi/phase4_debug_led/rtl/if_id.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/if_id.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module if_id
+
+Top level modules:
+	if_id
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/ctrl.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/ctrl.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ctrl
+
+Top level modules:
+	ctrl
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/rom.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/rom.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module rom
+
+Top level modules:
+	rom
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/defines.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/defines.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/debug_button_debounce.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/debug_button_debounce.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module debug_button_debounce
+-- Compiling module key_debounce
+
+Top level modules:
+	debug_button_debounce
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/open_risc_v.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/open_risc_v.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module open_risc_v
+
+Top level modules:
+	open_risc_v
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/ram.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/ram.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ram
+
+Top level modules:
+	ram
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/pc_reg.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/pc_reg.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module pc_reg
+
+Top level modules:
+	pc_reg
+
+} {} {}} E:/lianxi/phase4_debug_led/utils/dff_set.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/utils/dff_set.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module dff_set
+
+Top level modules:
+	dff_set
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/uart_debug.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/uart_debug.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module uart_debug
+-- Compiling module write2rom
+-- Compiling module uart_recv
+
+Top level modules:
+	uart_debug
+
+} {} {}} E:/lianxi/phase4_debug_led/utils/dual_ram.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/utils/dual_ram.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module dual_ram
+-- Compiling module dual_ram_template
+
+Top level modules:
+	dual_ram
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/id.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/id.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module id
+
+Top level modules:
+	id
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/ex.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/ex.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module ex
+
+Top level modules:
+	ex
+
+} {} {}} E:/lianxi/phase4_debug_led/tb/open_risc_v_soc.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/tb/open_risc_v_soc.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module open_risc_v_soc
+
+Top level modules:
+	open_risc_v_soc
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/regs.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/regs.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module regs
+
+Top level modules:
+	regs
+
+} {} {}} E:/lianxi/phase4_debug_led/rtl/id_ex.v {1 {vlog -work work -stats=none E:/lianxi/phase4_debug_led/rtl/id_ex.v
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module id_ex
+
+Top level modules:
+	id_ex
+
+} {} {}} E:/lianxi/phase4_debug_led/tb/tb.v {1 {vlog -work work -stats=none {E:\lianxi\phase4_debug_led\tb\tb.v}
+Model Technology ModelSim DE-64 vlog 10.6c Compiler 2017.07 Jul 26 2017
+-- Compiling module tb
+
+Top level modules:
+	tb
+
+} {} {}}

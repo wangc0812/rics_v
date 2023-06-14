@@ -20,10 +20,14 @@ module tb;
 	
 	//rom 初始值
 	initial begin
-		$readmemh("./generated/inst_data.txt",tb.open_risc_v_soc_inst.rom_inst.rom_mem);
+		$readmemh("./generated/inst_data.txt",tb.open_risc_v_soc_inst.rom_inst.rom_32bit.dual_ram_template_isnt.memory);
 	end
-
-
+	//获取波形
+    // initial begin
+        // $dumpfile("tb.vcd");
+        // $dumpvars(0, tb);
+    // end
+	
 	integer r;
 	initial begin
 /* 		while(1)begin
@@ -51,8 +55,8 @@ module tb;
 				$display("x%2d register value is %d",r,tb.open_risc_v_soc_inst.open_risc_v_inst.regs_inst.regs[r]);	
 			end	
 		end
-
-		$finish();
+		
+		$finish;
 	end
 	
 	open_risc_v_soc open_risc_v_soc_inst(

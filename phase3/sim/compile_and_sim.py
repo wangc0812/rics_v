@@ -3,6 +3,7 @@ import subprocess
 import sys
 
 
+
 def list_binfiles(path):
     files = []
     list_dir = os.walk(path)
@@ -13,7 +14,6 @@ def list_binfiles(path):
                 files.append(apath)
 
     return files
-
 
 def bin_to_mem(infile, outfile):
     binfile = open(infile, 'rb')
@@ -26,7 +26,7 @@ def bin_to_mem(infile, outfile):
     b2 = 0
     b3 = 0
 
-    for b in binfile_content:
+    for b in  binfile_content:
         if index == 0:
             b0 = b
             index = index + 1
@@ -49,7 +49,6 @@ def bin_to_mem(infile, outfile):
     binfile.close()
     datafile.close()
 
-
 def compile():
     # 获取上一级目录
     rtl_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -71,13 +70,14 @@ def compile():
     iverilog_cmd.append(rtl_dir + r'/rtl/ex.v')
     iverilog_cmd.append(rtl_dir + r'/rtl/regs.v')
     iverilog_cmd.append(rtl_dir + r'/rtl/ctrl.v')
-    # iverilog_cmd.append(rtl_dir + r'/rtl/ram.v')
+    iverilog_cmd.append(rtl_dir + r'/rtl/ram.v')
     iverilog_cmd.append(rtl_dir + r'/rtl/rom.v')
-    iverilog_cmd.append(rtl_dir + r'/rtl/ifetch.v')
+    iverilog_cmd.append(rtl_dir + r'/rtl/debug_button_debounce.v')
+    iverilog_cmd.append(rtl_dir + r'/rtl/uart_debug.v')
     iverilog_cmd.append(rtl_dir + r'/rtl/open_risc_v.v')
-    # # 通用utils
+    # 通用utils
     iverilog_cmd.append(rtl_dir + r'/utils/dff_set.v')
-    # iverilog_cmd.append(rtl_dir + r'/utils/dual_ram.v')
+    iverilog_cmd.append(rtl_dir + r'/utils/dual_ram.v')
 
     # 顶层soc
     iverilog_cmd.append(rtl_dir + r'/tb/open_risc_v_soc.v')
@@ -85,7 +85,6 @@ def compile():
     # 编译
     process = subprocess.Popen(iverilog_cmd)
     process.wait(timeout=5)
-
 
 def sim():
     # 1.编译rtl文件
@@ -99,7 +98,6 @@ def sim():
     except subprocess.TimeoutExpired:
         print('!!!Fail, vvp exec timeout!!!')
 
-
 def run(test_binfile):
     # 获取上一级路径
     rtl_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -109,7 +107,6 @@ def run(test_binfile):
     bin_to_mem(test_binfile, out_mem)
     # 运行仿真
     sim()
-
 
 if __name__ == '__main__':
     sys.exit(run(sys.argv[1]))

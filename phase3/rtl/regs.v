@@ -42,7 +42,7 @@ module regs(
 
 	always @(posedge clk)begin
 		if(rst == 1'b0) begin
-			for(i = 0;i < 31;i = i + 1)begin
+			for(i=0;i<31;i=i+1)begin
 				regs[i] <= 32'b0;
 			end
 		end	

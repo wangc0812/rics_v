@@ -1,0 +1,74 @@
+# Reading E:/questasim64_10.6c/tcl/vsim/pref.tcl
+# //  Questa Sim-64
+# //  Version 10.6c win64 Jul 26 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# OpenFile F:/bz_riscv/phase3_addram2/tb/dddd.mpf
+# Loading project dddd
+# Error opening F:/bz_riscv/phase3_addram2/rtl/dff_set.v
+# Path name 'F:/bz_riscv/phase3_addram2/rtl/dff_set.v' doesn't exist.
+# Compile of open_risc_v_soc.v was successful.
+# Compile of tb.v was successful.
+# Compile of ctrl.v was successful.
+# Compile of defines.v was successful.
+# Compile of ex.v was successful.
+# Compile of id.v was successful.
+# Compile of id_ex.v was successful.
+# Compile of if_id.v was successful.
+# Compile of open_risc_v.v was successful.
+# Compile of pc_reg.v was successful.
+# Compile of ram.v was successful.
+# Compile of regs.v was successful.
+# Compile of rom.v was successful.
+# Compile of uart_debug.v was successful.
+# Compile of dff_set.v was successful.
+# Compile of dual_ram.v was successful.
+# 16 compiles, 0 failed with no errors.
+vsim work.tb
+# vsim work.tb 
+# Start time: 12:46:40 on May 06,2022
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: F:\bz_riscv\phase3_addram2\tb\tb.v(56): (vopt-2685) [TFMPC] - Too few port connections for 'open_risc_v_soc_inst'.  Expected 5, found 2.
+# ** Warning: F:\bz_riscv\phase3_addram2\tb\tb.v(56): (vopt-2718) [TFMPC] - Missing connection for port 'led1'.
+# ** Warning: F:\bz_riscv\phase3_addram2\tb\tb.v(56): (vopt-2718) [TFMPC] - Missing connection for port 'uart_rxd'.
+# ** Warning: F:\bz_riscv\phase3_addram2\tb\tb.v(56): (vopt-2718) [TFMPC] - Missing connection for port 'debug'.
+# Loading work.tb(fast)
+run 1ms
+# Compile of open_risc_v_soc.v was successful.
+# Compile of tb.v was successful.
+# Compile of ctrl.v was successful.
+# Compile of defines.v was successful.
+# Compile of ex.v was successful.
+# Compile of id.v was successful.
+# Compile of id_ex.v was successful.
+# Compile of if_id.v was successful.
+# Compile of open_risc_v.v was successful.
+# Compile of pc_reg.v was successful.
+# Compile of ram.v was successful.
+# Compile of regs.v was successful.
+# Compile of rom.v was successful.
+# Compile of uart_debug.v was successful.
+# Compile of dff_set.v was successful.
+# Compile of dual_ram.v was successful.
+# 16 compiles, 0 failed with no errors.
+vsim work.tb
+# End time: 12:51:58 on May 06,2022, Elapsed time: 0:05:18
+# Errors: 0, Warnings: 4
+# vsim work.tb 
+# Start time: 12:51:58 on May 06,2022
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading work.tb(fast)
+run 1ms
+############################
+########  pass  !!!#########
+############################
