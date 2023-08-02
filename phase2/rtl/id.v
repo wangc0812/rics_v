@@ -190,7 +190,5 @@ module id(
 		endcase
 	end
 
-	
-
 
 endmodule
